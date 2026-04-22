@@ -24,3 +24,9 @@ Thumbs.db
 venv/
 env/
 .env
+
+# Semantic cache database (auto-generated at runtime)
+cache/
+
+# RAG vector database (auto-generated at runtime, ingest your own docs)
+knowledge/vectordb/

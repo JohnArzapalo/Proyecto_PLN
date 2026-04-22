@@ -45,6 +45,11 @@ SYSTEM_PROMPT = (
     "You keep responses short and conversational, like texting."
 )
 
+# --- RAG ---
+RAG_DB_PATH = os.path.join(BASE_DIR, 'knowledge', 'vectordb')
+RAG_CACHE_THRESHOLD = 0.92
+RAG_CACHE_SIZE = 500
+
 # --- Server ---
 HOST = '127.0.0.1'
 PORT = 5000

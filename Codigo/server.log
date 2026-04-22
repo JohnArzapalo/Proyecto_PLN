@@ -1,0 +1,48 @@
+Loading model: hannah_personality_final.pt
+Model loaded: 367,576,064 parameters
+Training step: 2000
+Loading tokenizer: C:\Users\johnm\OneDrive\Desktop\Codigo PLN\Proyecto_PLN\Codigo\tokenizer\hannah_tok\tokenizer.model
+Tokenizer vocab: 32000
+Initializing pipeline modules...
+Initializing RAG (db: C:\Users\johnm\OneDrive\Desktop\Codigo PLN\Proyecto_PLN\Codigo\knowledge\vectordb)...
+[RAG] Inicializando componentes...
+[EmbeddingService] Modelo 'all-MiniLM-L6-v2' cargado en CPU
+[VectorStore] Colección 'knowledge_base' lista. Documentos actuales: 0
+[RAG] Todos los componentes inicializados correctamente.
+Device: cpu
+Server ready!
+ * Serving Flask app 'app'
+ * Debug mode: off
+[SemanticCache] MISS (cache empty)
+[Classifier] signal=slow -> FastHannah (fallback — SlowHannah not integrated yet)
+
+[RAG] retrieve(mode=extended): 'hola...'
+[RAG] Knowledge base is empty — skipping retrieval.
+[SemanticCache] Loading embedding model (all-MiniLM-L6-v2)...
+[SemanticCache] Embedding model ready.
+[SemanticCache] Stored  (entries~1)
+[SemanticCache] HIT  (sim=1.000)
+[SemanticCache] MISS (best_sim=0.349)
+[Classifier] signal=slow -> FastHannah (fallback — SlowHannah not integrated yet)
+
+[RAG] retrieve(mode=extended): 'como estas...'
+[RAG] Knowledge base is empty — skipping retrieval.
+[SemanticCache] Stored  (entries~2)
+[SemanticCache] MISS (best_sim=0.365)
+[Classifier] signal=slow -> FastHannah (fallback — SlowHannah not integrated yet)
+
+[RAG] retrieve(mode=extended): 'hello my love...'
+[RAG] Knowledge base is empty — skipping retrieval.
+[SemanticCache] Stored  (entries~3)
+[SemanticCache] MISS (best_sim=0.316)
+[Classifier] signal=slow -> FastHannah (fallback — SlowHannah not integrated yet)
+
+[RAG] retrieve(mode=extended): 'i really miss you all the day, you are so special for me...'
+[RAG] Knowledge base is empty — skipping retrieval.
+[SemanticCache] Stored  (entries~4)
+[SemanticCache] MISS (best_sim=0.413)
+[Classifier] signal=slow -> FastHannah (fallback — SlowHannah not integrated yet)
+
+[RAG] retrieve(mode=extended): 'tell me about your day...'
+[RAG] Knowledge base is empty — skipping retrieval.
+[SemanticCache] Stored  (entries~5)

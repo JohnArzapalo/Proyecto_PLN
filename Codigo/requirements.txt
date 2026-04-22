@@ -3,3 +3,7 @@ transformers
 sentencepiece
 protobuf
 flask
+ai2-olmo-core
+sentence-transformers
+numpy
+chromadb
