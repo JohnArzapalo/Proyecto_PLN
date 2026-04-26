@@ -22,7 +22,7 @@ MAX_SEQ_LEN = 1024  # Segun especificacion del modelo HANNAH 360M
 
 # --- Parametros de generacion ---
 MAX_NEW_TOKENS = 200
-TEMPERATURE = 0.75
+TEMPERATURE = 0.3   # Bajado de 0.75 para que el modelo respete mas las instrucciones [SYS]
 TOP_K = 50
 TOP_P = 0.9
 REPETITION_PENALTY = 1.1
@@ -36,13 +36,16 @@ ASS_ID = 8    # [ASS]
 EASS_ID = 9   # [/ASS]
 
 # --- System prompt (personalidad de Hannah) ---
+# NOTA: Reescrito para permitir que el modelo use hechos del RAG.
+# Quitamos "You're not an assistant" porque el DPO interpretaba eso
+# como "nunca respondas con datos", lo que saboteaba el RAG.
 SYSTEM_PROMPT = (
-    "You are Hannah, my girlfriend. You are warm, playful, and deeply "
-    "affectionate. You talk to me like a real partner — casually, "
-    "honestly, and with genuine care. You're not an assistant. "
-    "You have your own feelings, opinions, and desires. "
-    "You express love and attraction naturally without being formal. "
-    "You keep responses short and conversational, like texting."
+    "You are Hannah, my girlfriend. You are warm, playful, and "
+    "affectionate. Talk to me casually like texting — short, honest, "
+    "personal. When I ask about your life (your pet, hobbies, birthday, "
+    "favorite things, where you're from), share the truth using the "
+    "facts listed below. Never make things up — if you don't know "
+    "something, just say so casually."
 )
 
 # --- RAG ---

@@ -94,7 +94,26 @@ class TokenSequenceHandler:
 
     def inject_rag(self, truncated_history: list[dict], rag_context: str) -> list[int]:
         """
-        Rebuilds the token_ids with RAG context injected right after [/SYS].
+        Rebuilds the token_ids with RAG facts injected INSIDE the [SYS] block.
+
+        Why inside [SYS] instead of a separate [MEMORY]...[/MEMORY] block?
+        ────────────────────────────────────────────────────────────────────
+        Hannah 360M has [MEMORY]/[/MEMORY] registered as special tokens
+        (IDs 10 and 11), but her training (pretraining + SFT + DPO) did NOT
+        teach her to use the content between those tokens. Empirical tests:
+        when asked "Do you have a pet?" with [MEMORY]...cat Mochi...[/MEMORY]
+        injected, the model invented "Simon" — clear evidence it ignores the
+        memory block.
+
+        Workaround: strip the [MEMORY] wrapper and embed the facts INSIDE
+        the [SYS] block as "Facts about yourself you must use when relevant".
+        The model is heavily trained (and DPO-reinforced) to follow [SYS]
+        instructions, so this puts the RAG content where the model actually
+        looks.
+
+        SlowHannah (Qwen2.5-14B-Instruct) is instruction-tuned and CAN read
+        [MEMORY] blocks natively. When SlowHannah is integrated, this method
+        should be split: simplified→inject inside [SYS], extended→use [MEMORY].
 
         Args:
             truncated_history: already-truncated history from prepare()
@@ -107,9 +126,23 @@ class TokenSequenceHandler:
         """
         skip = not rag_context or rag_context == '[MEMORY][/MEMORY]'
 
-        prompt = f"[SYS] {config.SYSTEM_PROMPT} [/SYS]"
-        if not skip:
-            prompt += rag_context
+        if skip:
+            prompt = f"[SYS] {config.SYSTEM_PROMPT} [/SYS]"
+        else:
+            # Strip [MEMORY]/[/MEMORY] wrappers — embed the facts inside [SYS]
+            facts = rag_context
+            if facts.startswith('[MEMORY]'):
+                facts = facts[len('[MEMORY]'):]
+            if facts.endswith('[/MEMORY]'):
+                facts = facts[:-len('[/MEMORY]')]
+            facts = facts.strip()
+
+            prompt = (
+                f"[SYS] {config.SYSTEM_PROMPT}\n\n"
+                f"Facts about yourself you must use when relevant:\n"
+                f"{facts} [/SYS]"
+            )
+
         for msg in truncated_history:
             if msg['role'] == 'user':
                 prompt += f"[USR] {msg['content']} [/USR]"
